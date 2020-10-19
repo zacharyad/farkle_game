@@ -1,0 +1,58 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./index.css">
+  <script defer src='./index.js'></script>
+</head>
+
+<body>
+  <div id="appWrapper">
+    <div class='headerTitle'>
+      <h1>Greed is Good: A Dice Game</h1>
+    </div>
+
+    <div id="setupForm">
+      <label for="players">Player's Name</label>
+      <input id="playerToAdd" name="players" type="text">
+      <button id="addPlayer" type="button">Click to add player.</button>
+      <label for='numberOfDice'>How many dice do you want to throw?</label>
+      <select id="amountOfDiceToThrow" name='numberOfDice' type='option'>
+        <option value='3'>3</option>
+        <option value='4'>4</option>
+        <option value='5'>5</option>
+        <option selected value='6'>6</option>
+        <option value='7'>7</option>
+      </select>
+
+      <button id="startGame" type="button">
+        Start Game
+      </button>
+    </div>
+
+    <div class='headerScore'>
+      <h2>PlayerName Score: <span id="scoreForPlayer">0</span></h2>
+    </div>
+
+    <div id='navWrapper'>
+      <nav>
+        <button class="btn" id="throwDiceBtn" type='button'>Throw Dice</button>
+      </nav>
+    </div>
+
+    <div id='diceWrapper'>
+
+    </div>
+
+    <button class="btn" id="clearScoreBtn" type='button'>Reset Game</button>
+
+    <a
+      href="http://www.smartboxdesign.com/farklerules.html#:~:text=A%201%20or%20a%205,selected%20dice%20in%20each%20roll.">How
+      do you play?</a>
+  </div>
+
+</body>
+
+</html>
