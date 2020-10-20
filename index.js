@@ -12,29 +12,82 @@ let playerOneScoreTotal = 0;
 let isSureTheyWantToReset = false;
 let isPlaying = false;
 let setDiceAmount = 0;
-let players = [];
+let StartedGame = false;
 let turn = 0;
+let idIterator = 0;
 
-// class Player {
-//   constructor(name, score = 0, farkles = 0){
-//     this.name = name;
-//   }
-// }
+class Game {
+  constructor() {
+    this.diceAmount = undefined;
+    this.players = [];
+    this.currentIdx = 0;
+    this.currentPlayer = this.players[this.currentIdx];
+  }
+  nextPlayer() {
+    if (this.currentIdx === this.players.length - 1) {
+      this.currentIdx = 0;
+    } else {
+      this.currentIdx++;
+    }
+    this.SetCurrentPlayer();
+  }
+  SetCurrentPlayer() {
+    this.currentPlayer = this.players[this.currentIdx];
+  }
+  checkForWinner() {
+    let winner = undefined;
+    this.players.forEach((player) => {
+      if (player.score >= 10000) {
+        winner = player;
+      }
+    });
+    return winner ? winner : false;
+  }
+  clearScore(playerId) {
+    let foundPlayer = this.players.filter(({ id }) => {
+      return id === playerId;
+    });
+    if (foundPlayer.length) return (foundPlayer[0].score = 0);
+    else return false;
+  }
+  addPlayersToDom() {}
+}
+
+class Player {
+  constructor(name, score = 0, farkles = 0) {
+    this.name = name;
+    this.score = score;
+    this.farkles = farkles;
+    this.id = StartedGame.currentIdx;
+  }
+  addToScore(amount) {
+    this.score += amount;
+  }
+  hasFarkled() {
+    if (this.farkles === 3) {
+      this.score -= 1000;
+    }
+  }
+  setId() {
+    this.id = idIterator;
+    idIterator += 1;
+  }
+}
 
 let addPlayerListenerFunc = () => {
+  if (!StartedGame) {
+    StartedGame = new Game();
+  }
   //get value from textbox
   let nameOfPlayer = playerToAdd.value; //this is the value of the player
   //make a new player instance from that
-  let newPlayer = Player(nameOfPlayer);
+  let newPlayer = new Player(nameOfPlayer);
   //add instance to array of player
-  players.push();
+  StartedGame.players.push(newPlayer);
+  newPlayer.setId();
   //show this player as a new dom element where the 'playerName score: 0' is (model it off that html structure)
 
-  let playerScoreElem = document.createElement('');
-};
-
-let startGameListenerFunc = () => {
-  hideSetUpFormAgain();
+  console.log(StartedGame.players);
 };
 
 let showSetUpFormAgain = () => {
@@ -58,6 +111,17 @@ let cautionResetButton = () => {
   isSureTheyWantToReset = true;
 };
 
+let startGameListenerFunc = () => {
+  if (!StartedGame) {
+    console.log('you need to add at least one player');
+  } else {
+    hideSetUpFormAgain();
+    StartedGame.diceAmount = Number(amountOfDiceToThrow.value);
+    console.log(StartedGame);
+    StartedGame.SetCurrentPlayer();
+  }
+};
+
 let clearScoreListenerFunc = () => {
   if (isSureTheyWantToReset) {
     playerOneScoreTotal = 0;
@@ -71,7 +135,7 @@ let clearScoreListenerFunc = () => {
 };
 
 let throwDiceListenerFunc = () => {
-  defaultResetButton();
+  //defaultResetButton();
   if (diceThrownArr.length) ClearnUpthrownDice();
   diceThrownArr = [];
 
@@ -82,8 +146,11 @@ let throwDiceListenerFunc = () => {
   }
 
   let highestPlayerScore = score(diceThrownArr);
-  playerOneScoreTotal += highestPlayerScore;
+  console.log(StartedGame);
+  StartedGame.currentPlayer.score += highestPlayerScore;
   playerOneScore.innerHTML = playerOneScoreTotal;
+
+  StartedGame.nextPlayer();
 };
 
 function throwOneDice(amount) {
