@@ -37,6 +37,10 @@ select {
   margin: 5px;
 }
 
+/* #throwDiceBtn {
+  display: none;
+} */
+
 
 .dot {
   width: 10px;
