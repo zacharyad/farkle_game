@@ -105,6 +105,10 @@ let defaultResetButton = () => {
   showSetUpFormAgain();
 };
 
+let addThrowBtn = () => {
+  throwDiceBtn.disabled = false;
+};
+
 let cautionResetButton = () => {
   clearScoreBtn.style.backgroundColor = 'red';
   clearScoreBtn.innerHTML = 'If you are sure click again.';
@@ -112,6 +116,7 @@ let cautionResetButton = () => {
 };
 
 let startGameListenerFunc = () => {
+  addThrowBtn();
   if (!StartedGame) {
     console.log('you need to add at least one player');
   } else {
